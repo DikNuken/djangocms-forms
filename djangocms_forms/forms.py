@@ -358,6 +358,11 @@ class FormBuilder(forms.Form):
         email = EmailMultiAlternatives(mail_subject, message, mail_from, mail_to)
         email.attach_alternative(message_html, 'text/html')
 
+        for data in form_data:
+            if data['name'] == 'email' and data['value']:
+                email.reply_to = [data['value'], ]
+                break
+
         if self.form_definition.email_uploaded_files:
             for field, filedata in self.files.items():
                 filedata.open('rb')
